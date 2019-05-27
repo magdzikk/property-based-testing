@@ -1,0 +1,5 @@
+.gradle/
+.idea/
+.java-version
+.jqwik-database
+out/

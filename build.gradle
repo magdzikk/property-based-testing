@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'pbt'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+ext.junitPlatformVersion = '1.4.0'
+ext.junitJupiterVersion = '5.4.0'
+
+ext.jqwikVersion = '1.1.1'
+
+test {
+    useJUnitPlatform {
+        includeEngines "jqwik"
+    }
+
+    include '**/*Properties.class'
+    include '**/*Test.class'
+    include '**/*Tests.class'
+}
+
+dependencies {
+    compile 'com.google.guava:guava:27.1-jre'
+
+    // aggregate jqwik dependency
+    testCompile "net.jqwik:jqwik:${jqwikVersion}"
+
+    // Add if you also want to use the Jupiter engine or Assertions from it
+    testCompile("org.junit.jupiter:junit-jupiter-engine:5.4.0")
+
+    // Add any other test library you need...
+    testCompile("org.assertj:assertj-core:3.9.1")
+}
