@@ -3,3 +3,4 @@
 .java-version
 .jqwik-database
 out/
+build/

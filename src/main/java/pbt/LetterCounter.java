@@ -9,8 +9,7 @@ class LetterCounter {
     ImmutableMap<Character, Integer> countOccurrences(String sentence) {
         Map<Character, Integer> map = new HashMap<>();
         for(char c: sentence.toCharArray()) {
-//            map.put(c, map.getOrDefault(c, 0) + 1);
-            map.put(c, map.getOrDefault(c, 0));
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
         return ImmutableMap.copyOf(map);
     }
