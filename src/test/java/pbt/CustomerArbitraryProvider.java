@@ -14,6 +14,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CustomerArbitraryProvider implements ArbitraryProvider {
 
+    private static final LocalDate OLDEST_DAY_OF_BIRTH = LocalDate.of(1980, 1, 1);
+    private static final LocalDate START_OF_BUSINESS = LocalDate.of(2010, 1, 1);
+
     @Override
     public boolean canProvideFor(TypeUsage targetType) {
         return targetType.isOfType(Customer.class);
@@ -21,10 +24,10 @@ public class CustomerArbitraryProvider implements ArbitraryProvider {
 
     @Override
     public Set<Arbitrary<?>> provideFor(TypeUsage targetType, SubtypeProvider subtypeProvider) {
-            Arbitrary<String> names = Arbitraries.strings().alpha().ofMinLength(3).ofMaxLength(21);
-            LocalDate oldestPossibleDate = LocalDate.of(2014, 2, 25);
-            Arbitrary<LocalDate> datesWhenJoined = datesFromRange(oldestPossibleDate, LocalDate.now());
-            return Collections.singleton(Combinators.combine(names, datesWhenJoined).as(Customer::new));
+        Arbitrary<String> names = Arbitraries.strings().alpha().ofMinLength(3).ofMaxLength(21);
+        Arbitrary<LocalDate> datesWhenJoined = datesFromRange(START_OF_BUSINESS, LocalDate.now());
+        Arbitrary<LocalDate> birthday = datesFromRange(OLDEST_DAY_OF_BIRTH, LocalDate.now().minusYears(18));
+        return Collections.singleton(Combinators.combine(names, datesWhenJoined, birthday).as(Customer::new));
     }
 
     private Arbitrary<LocalDate> datesFromRange(LocalDate minDate, LocalDate maxDate) {

@@ -1,12 +1,10 @@
 package pbt;
 
+import net.jqwik.api.Assume;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.AlphaChars;
-import net.jqwik.api.constraints.BigRange;
-import net.jqwik.api.constraints.Scale;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 class LetterCounterPropertyTest {
@@ -19,5 +17,21 @@ class LetterCounterPropertyTest {
         int sum = occurrences.values().stream().mapToInt(n -> n).sum();
 
         return sum == sentence.length();
+    }
+
+    @Property
+    boolean mapShouldNeverBeNull(@ForAll String sentence) {
+        Map<Character, Integer> occurrences = counter.countOccurrences(sentence);
+
+        return occurrences != null;
+    }
+
+    @Property
+    boolean nonEmptyMapForNonEmptySentence(@ForAll String sentence) {
+        Assume.that(sentence.length() > 0);
+
+        Map<Character, Integer> occurrences = counter.countOccurrences(sentence);
+
+        return occurrences.size() > 0;
     }
 }
